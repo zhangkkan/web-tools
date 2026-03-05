@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../favicon.ico">
+    <title>Git 命令</title>
+    <link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .panel-a { padding-top: 25px; }
+        h2 { margin-bottom: 15px; font-size: 16px; font-weight: 500; }
+        label { display: inline-block; padding: 3px 5px; }
+        .copy-group { position: relative; }
+        .copy-group .btn { position: absolute; right: 5px; bottom: 5px }
+        .entry { position: fixed; top: 20px; right: 20px; z-index: 1; display: block; width: 40px; height: 40px; line-height: 40px; overflow: hidden; text-align: center; border-radius: 50%; background: #0055d4; color: #fff; font-size: 20px;}
+        .entry:hover { background: rgb(25, 55, 100); }
+    </style>
+</head>
+
+<body>
+<div id="app" class="wrapper w-max-1000 mx-auto form-a">
+    <a class="entry" href="/links-jenkins/">J</a>
+    <section class="panel-a mb-6">
+        <h2>合并 {from} 分支到 {target} 分支，并推送到远程</h2>
+        <input v-model="merge2From" type="text" class="full mb-3" placeholder="from，如：feature/xxx/yyy" autofocus>
+        <input v-model="merge2Target" type="text" class="full mb-3" placeholder="target">
+        <p class="mb-3">
+            <label><input type="checkbox" v-model="merge2deleteLocal"> 删除本地分支</label>
+            <label><input type="checkbox" v-model="merge2ReleaseBranch"> 合并到release分支</label>
+        </p>
+        <div class="copy-group">
+            <textarea v-html="merge2Code" class="full" style="height: 165px"></textarea>
+            <button class="btn" type="button">复 制</button>
+        </div>
+    </section>
+
+    <section class="panel-a mb-6">
+        <h2>新建分支</h2>
+        <table class="table-a" style="width: 100%;">
+            <tr>
+                <td style="width: 1%; padding-right: 20px;">
+                    <input v-model="createBranchName" @blur="recordFeaturePrefix" type="text" placeholder="feature/name/branchName" style="width: 500px">
+                </td>
+                <td>
+                    <label v-for="item in ['Feature', 'Release', 'Hotfix']" :key="item">
+                        <input type="radio" v-model="createBranchType" :value="item">
+                        {{ item }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="copy-group">
+                        <textarea v-html="createBranchCode" class="full" style="height: 120px"></textarea>
+                        <button class="btn" type="button">复 制</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="panel-a mb-6">
+        <h2>合并release分支</h2>
+        <input v-model="releaseBranch" type="text" class="full mb-3" placeholder="20190917.all or release/20190917.all">
+        <div class="copy-group">
+            <textarea v-html="releaseCode" class="full" style="height: 230px"></textarea>
+            <button class="btn" type="button">复 制</button>
+        </div>
+    </section>
+
+    <section class="panel-a mb-6">
+        <h2>更新 develop 和 master</h2>
+        <div class="copy-group">
+                <textarea class="full" style="height: 130px">git -c diff.mnemonicprefix=false -c core.quotepath=false --no-optional-locks fetch --prune origin
+git checkout develop
+git pull origin develop
+git checkout master
+git pull origin master
+</textarea>
+            <button class="btn" type="button">复 制</button>
+        </div>
+    </section>
+
+    <section class="panel-a mb-6">
+        <h2>Review代码</h2>
+        <input v-model="reveiwBranch" type="text" class="full mb-3" placeholder="feature/name/branchName">
+        <div class="copy-group">
+            <textarea v-html="reveiwCode" class="full" style="height: 120px"></textarea>
+            <button class="btn" type="button">复 制</button>
+        </div>
+    </section>
+</div>
+<script src="../assets/dist/vue.js"></script>
+<script src="../assets/dist/api-clipboard.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

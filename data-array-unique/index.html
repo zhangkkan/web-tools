@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>排除重复项</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<style>
+.dls { margin-left: -30px; }
+.dls dl { padding-left: 30px; width: 33.33%; float: left; font-weight: bold; }
+.dls textarea { width: 100%; height: 500px; }
+</style>
+<script src="main.js"></script>
+</head>
+
+<body onload="exclude()">
+<div class="wrapper w-max-1000 mx-auto">
+    <div class="panel-a form-a clearfix">
+        <div class="dls">
+            <dl>
+                <dt class="mb-2 text-center">原始数据</dt>
+                <dd><textarea onblur="exclude()" id="originData">aaa
+bbb
+aaa
+ccc</textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">排除后数据</dt>
+                <dd><textarea id="resultData"></textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">重复数据</dt>
+                <dd><textarea id="excludedData"></textarea></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+</body>
+</html>

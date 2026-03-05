@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>排除重复项</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<style>
+.dls { margin-left: -30px; }
+.dls dl { padding-left: 30px; width: 33.33%; float: left; font-weight: bold; }
+.dls textarea { width: 100%; height: 500px; }
+</style>
+<script src="main.js"></script>
+</head>
+
+<body onload="replaceData()">
+<div class="wrapper w-max-1000 mx-auto">
+    <div class="panel-a form-a clearfix">
+        <div class="dls">
+            <dl>
+                <dt class="mb-2 text-center">原始数据</dt>
+                <dd><textarea onblur="replaceData()" id="originData"></textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">被替换数据</dt>
+                <dd><textarea id="oldData"></textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">新数据</dt>
+                <dd><textarea id="newData"></textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">替换结果</dt>
+                <dd><textarea id="resultData"></textarea></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="shortcut icon" href="../favicon.ico">
+<title>字符串拼接</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<style>
+    label { display: block; margin-bottom: 10px; font-weight: bold; }
+    .origins { margin-left: -30px; text-align: center; }
+    .origin { margin-bottom: 20px; padding-left: 30px; width: 33.33%; float: left; }
+    .origin:nth-child(3n+1) { clear: both; }
+    .origin .btn-remove, .origin .btn-format { font-size: 12px; padding: 10px; }
+</style>
+</head>
+
+<body>
+<div id="app" class="wrapper w-max-1000 mx-auto">
+    <div class="panel-a form-a">
+        <label>拼接字段 <button type="button" class="btn-link ml-4" v-on:click="addOrigin()">添加字段</button></label>
+        <div class="origins clearfix">
+            <div class="origin" v-for="(item, index) in origins" style="width: 100%" v-bind:style="originStyle">
+                <textarea v-model="origins[index]" class="full h-200" ref="origin"></textarea>
+                <p>
+                    <button class="btn-link btn-remove" v-on:click="removeOrigin(index)" v-if="index!=0">删除</button>
+                    <button class="btn-link btn-format" v-on:click="splitByComma(index)">按逗号分割</button>
+                </p>
+            </div>
+        </div>
+
+        <label>拼接规则 (支持大小写转换)</label>
+        <textarea v-model="rule" ref="rule" class="full h-100 mb-1"></textarea>
+        <p class="mb-4 font-small">ps: 有效关键字：{col1}、{col1|upper}、{col1|lower}、{col1|title}、{index}、{index+1}</p>
+
+        <label>分隔符</label>
+        <input type="text" v-model="separator" class="full mb-4" placeholder="\n">
+
+        <div class="text-center mb-4">
+            <button type="button" class="btn" v-on:click="spliceAsRule()">拼 接</button>
+        </div>
+
+        <textarea v-model="result" ref="result" id="result" class="full h-200 mb-4"></textarea>
+        <div class="text-center">
+            <button id="btn-copy" class="btn" type="button">复 制</button>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/dist/vue.js"></script>
+<script src="../assets/dist/api-clipboard.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html class="full-y">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../favicon.ico">
+    <title>Jenkins链接</title>
+    <link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+    <style>
+        dt { cursor: pointer; }
+        dt span { font-size: 12px; font-weight: normal; color: #666; margin-left: 10px; }
+        h3 { font-size: 1.2em; }
+        label { display: inline-block; line-height: 39px; cursor: pointer; }
+        .table-c th, .table-c td { padding: 10px; }
+        .table-c thead th { background: #eee; }
+        .table-c tbody tr:hover th, .table-c tbody tr:hover td { background: #ecf3ff; }
+        .result-list .space { margin: 0 10px 10px 0; }
+        .result-list .dropdown { position: relative; z-index: 0; display: inline-block; }
+        .result-list .dropdown-menu { display: none; position: absolute; z-index: 0; top: 38px; left: 0; width: 200px; padding: 20px 20px 10px; background: #fff; border: solid 1px #ccc; }
+        .result-list .dropdown:hover { z-index: 1; }
+        .result-list .dropdown:hover .dropdown-btn {background: #fff; border-bottom-color: #fff; position: relative; z-index: 1;}
+        .result-list .dropdown:hover .dropdown-menu {display: block;}
+        .result-list .dropdown-menu a {display: block; width: 100%; margin-bottom: 10px;}
+        .entry { position: fixed; top: 20px; right: 20px; z-index: 1; display: block; width: 40px; height: 40px; line-height: 40px; overflow: hidden; text-align: center; border-radius: 50%; background: #0055d4; color: #fff; font-size: 20px;}
+        .entry:hover { background: #06f; }
+    </style>
+</head>
+
+<body class="full-y">
+<a class="entry" href="/code-git/">G</a>
+<div id="app" class="wrapper-with-side">
+    <div class="sidebar sidebar-a" id="domains">
+        <dl v-for="(project, projectName) in config" :key="projectName">
+            <dt @click="filtrate(projectName)" class="pointer">{{ project.remark }}</dt>
+            <template v-if="project.filters">
+                <dd v-for="filterKey in Object.keys(project.filters)"
+                    :key="filterKey"
+                    @click="filtrate(projectName, filterKey)"
+                >
+                    {{ filterKey }}
+                </dd>
+            </template>
+        </dl>
+    </div>
+    <div class="main">
+        <div v-for="(project, projectName) in filtratedConfig"
+             :key="projectName"
+             class="mb-4 result-list">
+            <h3 class="mb-2">{{ project.remark }}</h3>
+            <table class="table-c">
+                <thead>
+                <tr>
+                    <th style="width: 150px">环境</th>
+                    <th style="width: 150px">操作</th>
+                    <th style="width: 150px">网站</th>
+                    <th>查看版本号</th>
+                </tr>
+                </thead>
+                <tbody v-for="(env, envKey) in project.envs" :key="envKey">
+                <tr>
+                    <th>{{ envKey }}</th>
+                    <td>
+                        <a
+                                :href="getDeployLink(env.job, envKey)"
+                                :title="env.job"
+                                class="btn-secondary space"
+                                target="_blank"
+                        >
+                            发布
+                        </a>
+                    </td>
+
+                    <td>
+                        <a
+                                v-for="(site, siteKey) in env.sites"
+                                :key="siteKey"
+                                :href="getSiteLink(site.domain)"
+                                :title="site.domain"
+                                class="btn-secondary space"
+                                target="_blank"
+                        >
+                            {{ siteKey }}
+                        </a>
+                    </td>
+
+                    <td>
+                        <a
+                                v-if="project.version"
+                                v-for="(site, siteKey) in env.sites"
+                                :key="siteKey"
+                                :href="getVersionLink(site.domain)"
+                                :title="site.domain"
+                                class="btn-secondary space"
+                                target="_blank"
+                        >
+                            Version
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/dist/vue.js"></script>
+<script src="../assets/dist/dom-utils.js"></script>
+<script src="../assets/dist/api-axios.js"></script>
+<script src="config.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

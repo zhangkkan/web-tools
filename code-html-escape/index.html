@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HTML转义</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<script src="../assets/dist/api-clipboard.js"></script>
+<script src="main.js"></script>
+</head>
+
+<body onload="require('api-clipboard').set('btn-copy', 'result')">
+<div class="wrapper w-max-1000 mx-auto">
+    <div class="form-a">
+        <p class="mb-1"><strong>转义前</strong></p>
+        <textarea id="original" onkeyup="htmlEscape()" class="full h-150 mb-4 align-top"></textarea>
+        <p class="mb-1"><strong>转义后</strong></p>
+        <pre id="result" class="full h-150 mb-6 align-top"></pre>
+        <p class="text-center">
+            <input id="btn-copy" class="btn mr-4" type="button" value="复 制">
+            <input id="btn-clear" class="btn" type="button" value="清 空" onClick="clearData()">
+        </p>
+    </div>
+</div>
+</body>
+</html>

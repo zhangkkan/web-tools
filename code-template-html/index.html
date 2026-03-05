@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="shortcut icon" href="../favicon.ico">
+<title>Doc+Template->Html</title>
+<link rel="stylesheet" href="../assets/dist/global.css">
+<script src="../assets/dist/api-clipboard.js"></script>
+<script src="main.js"></script>
+</head>
+
+<body onload="require('api-clipboard').set('btn-copy', 'result')">
+<div class="wrapper">
+    <div class="panel-a form-a w-max-1000 mx-auto">
+        <textarea id="template" class="full h-200 mb-3">{% extends "webapp/mail/common/base.twig" %}
+
+{% block title %}
+    {line1}
+{% endblock %}
+
+{% block orderStatus %}
+    {line2}
+{% endblock %}
+
+{% block orderText %}
+    <div style="margin-bottom: 12px;">{line3}</div>
+{% endblock %}</textarea>
+        <textarea id="doc" class="full h-200 mb-3"></textarea>
+        <p class="mb-3 text-center">
+            <label class="mr-4"><input id="check-num" type="checkbox" checked> 检查行数</label>
+            <input class="btn mr-4" type="button" value="生成html" onClick="makeHtml()">
+            <input class="btn" type="button" value="清空" onClick="clearData()">
+        </p>
+        <textarea id="result" class="full h-200 mb-4"></textarea>
+        <p class="text-center"><input id="btn-copy" class="btn" type="button" value="复制代码"></p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Doc->Html/Template</title>
+<link rel="stylesheet" href="../assets/dist/global.css">
+<style>
+    #options-form { background: #f7f7f7; border: solid 1px #ccc; font-size: 12px; }
+    #options-form table { border-collapse: separate; }
+    #options-form th, #options-form td { padding: 10px 20px; border: solid 1px #eee; font-weight: normal; vertical-align: top; }
+    #options-form tr:hover th, #options-form tr:hover td { border-top-color: #999; border-bottom-color: #999; }
+    #options-form tr:hover th { border-left-color: #999; }
+    #options-form tr:hover td:last-child { border-right-color: #999; }
+    #options-form td { white-space: nowrap; }
+    #options-form label { margin-right: 10px; display: inline-block; vertical-align: top; white-space: nowrap; overflow: hidden; max-width: 100px; text-overflow: ellipsis; }
+    #options-form label input { vertical-align: top; margin-top: 2px; }
+    #options-form td button { margin: 0 5px; padding: 0 5px; background: #fff; border: solid 1px #ccc; font-size: 12px; }
+    #options-form .tr-removed th, #options-form .tr-removed td { background: #666; border-color: #666; color: #999; text-shadow: none; }
+</style>
+</head>
+
+<body>
+<div class="wrapper text-center">
+    <form class="panel-a form-a mb-6" id="doc-form">
+        <p class="links mb-4">
+            <a href="test.html" class="mr-4">测试生成的html代码</a>
+        </p>
+        <textarea name="doc" class="mb-3 full h-200" placeholder="多行文本" autofocus></textarea>
+        <input type="text" class="mb-1 full" name="tags" value="">
+        <p class="mb-4 text-left font-small text-muted">Note: .后跟class，#后跟id，:default默认选中(有且仅有一个)，不同标签以逗号(,)分隔，多个class以加号(+)分隔。
+            <br>如：div#example.text-center+mb-3+ml-1:default 解析为
+            &lt;div class=&quot;text-center mb-3 ml-1&quot; id=&quot;example&quot;&gt;&lt;/div&gt;，同时默认选中。
+        </p>
+        <textarea name="cssCode" class="mb-4 full h-100"></textarea>
+        <p>
+            <input class="btn mr-4" type="submit" value="生成操作列表">
+            <input id="doc-btn-clear" class="btn mr-4" type="button" value="清 空">
+            <input id="doc-btn-default" class="btn" type="button" value="使用默认设置">
+        </p>
+    </form>
+
+    <form id="options-form" class="mb-6 hide">
+        <table class="mb-4"></table>
+        <button id="options-btn-html" type="button" class="btn mb-4 mr-4">生成html代码</button>
+        <button id="options-btn-line" type="button" class="btn mb-4">生成{line}模板</button>
+    </form>
+
+    <div id="html-code-wrap" class="hide">
+        <textarea id="html-code" class="full h-200 input-b font-small align-top mb-4"></textarea>
+        <p class="text-center"><input id="html-code-btn" class="btn" type="button" value="复制代码"></p>
+    </div>
+</div>
+<script src="../assets/dist/api-clipboard.js"></script>
+<script src="../assets/dist/dom-utils.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

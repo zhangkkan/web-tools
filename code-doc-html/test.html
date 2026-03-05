@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no"/>
+<meta name="wap-font-scale" content="no"/>
+<title>title</title>
+<script>
+    if (navigator.userAgent.match(/(iPhone|iPod|Android|BlackBerry|SymbianOS|Windows Phone|ZuneWP7|webOS)/i)) {
+        document.write('<link href="http://dev.vova.com/public/a/css/m-main-ltr.css" rel="stylesheet" type="text/css" />');
+        document.write('<style>.help-menu { display: none }</style>');
+    } else {
+        document.write('<link href="http://dev.vova.com/public/a/css/pc-main-ltr.css" rel="stylesheet" type="text/css" />');
+    }
+</script>
+<style>
+    body { padding-bottom: 50px; }
+    #page-code-wrap { border-bottom: solid 1px #ccc; padding: 20px 0 0; }
+</style>
+<script>
+    var webData = {
+        "WEB_ROOT": "",
+        "IMG_PATH": "",
+        "PIC_PATH": "",
+        "lang": "",
+        "version": "",
+        "currency": "",
+        "fb_app": "",
+        "domain": "",
+        "currencySymbol": "",
+        "direction": "",
+        "countryCode": "",
+        "state": {
+            "isPhone": navigator.userAgent.match(/(iPhone|iPod|Android|BlackBerry|SymbianOS|Windows Phone|ZuneWP7|webOS)/i) ? true : false
+        }
+    };
+</script>
+<script src="http://dev.vova.com/public/js/languages/en.js"></script>
+<script src="http://dev.vova.com/public/js/jquery.min.js"></script>
+<script src="http://dev.vova.com/public/a/js/main.js"></script>
+<script>
+    function setPage() {
+        var code = $('#page-code').val();
+        $('#help-main').html(code);
+        if(code.indexOf('help-faqs') != -1) {
+            $('#btnExpandAll').show();
+        } else {
+            document.body.scrollTop = 200;
+        }
+    }
+    function expandAll() {
+        $('#help-main').find('.hide').removeClass('hide').end().find('dt').addClass('active');
+    }
+</script>
+</head>
+
+<body>
+<div class="wrapper input-group-form">
+    <div class="input-group-form text-center" id="page-code-wrap">
+        <textarea class="marb" id="page-code" placeholder="paste code here"></textarea>
+        <button class="btn btn--full marb" id="btnSubmit" onclick="setPage()">SUBMIT</button>
+        <button class="btn--tertiary btn--full marb" id="btnExpandAll" onclick="expandAll()" style="display: none">展开所有问题</button>
+    </div>
+</div>
+<div class="wrapper main">
+    <div class="help-menu">
+        <dl>
+            <dt>COMPANY INFO</dt>
+            <dd><a target="_blank" href="http://dev.vova.com/about-us.html">About Us</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/terms-and-conditions.html">Terms And Conditions</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/privacy-policy.html">Privacy Policy</a></dd>
+        </dl>
+        <dl>
+            <dt>HELP & SUPPORT</dt>
+            <dd><a target="_blank" href="http://dev.vova.com/faqs.html">FAQs</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/how-to-measure.html">How To Measure</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/how-to-order.html">How To Order</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/how-to-track.html">How To Track</a></dd>
+        </dl>
+        <dl>
+            <dt>CUSTOMER CARE</dt>
+            <dd><a target="_blank" href="http://dev.vova.com/contact-us.html">Contact Us</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/payment-method.html">Payment Method</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/shipping-info.html">Shipping Info</a></dd>
+            <dd><a target="_blank" href="http://dev.vova.com/return-policy.html">Return Policy</a></dd>
+        </dl>
+    </div>
+    <div class="help-main" id="help-main"></div>
+</div>
+<script>require('main').initAll();</script>
+</body>
+</html>

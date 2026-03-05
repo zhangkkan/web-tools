@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>比较两组数据中的差异</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<style>
+    .wrapper { max-width: 1240px; }
+    .dls { margin-left: -30px; }
+    .dls dl { padding-left: 30px; width: 25%; float: left; font-weight: bold; }
+    .dls textarea { width: 100%; height: 500px; }
+</style>
+<script src="main.js"></script>
+</head>
+
+<body onload="diff()">
+<div class="wrapper mx-auto">
+    <div class="panel-a form-a clearfix">
+        <div class="dls">
+            <dl>
+                <dt class="mb-2 text-center">数据一</dt>
+                <dd><textarea onblur="diff()" id="originData1">aaa
+bbb
+ccc
+ccc
+ddd</textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">数据二</dt>
+                <dd><textarea onblur="diff()" id="originData2">aaa
+bbb
+bbb
+111
+222</textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">数据一多出的数据</dt>
+                <dd><textarea id="diffData1"></textarea></dd>
+            </dl>
+            <dl>
+                <dt class="mb-2 text-center">数据二多出的数据</dt>
+                <dd><textarea id="diffData2"></textarea></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+</body>
+</html>
