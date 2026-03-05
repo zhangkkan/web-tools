@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSON 差异对比</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<style>
+    .wrapper { max-width: 1320px; }
+    .hero {
+        margin-bottom: 20px;
+        padding: 18px 24px;
+        background: linear-gradient(135deg, #f4f8ff, #f7f7f7);
+        border: solid 1px #d8e3ff;
+        border-radius: 10px;
+    }
+    .hero h1 {
+        margin-bottom: 4px;
+        font-size: 22px;
+        line-height: 1.3;
+    }
+    .hero p { color: #555; }
+    .editor-columns,
+    .result-columns {
+        margin-left: -20px;
+    }
+    .editor-columns .col,
+    .result-columns .col {
+        float: left;
+        width: 50%;
+        padding-left: 20px;
+    }
+    .editor-columns textarea {
+        width: 100%;
+        height: 430px;
+        font: normal 13px/1.5 Consolas, Monaco, monospace;
+    }
+    .toolbar {
+        margin-top: 18px;
+        text-align: center;
+    }
+    .toolbar .btn,
+    .toolbar .btn-secondary { min-width: 140px; }
+    .tips {
+        margin-top: 8px;
+        color: #777;
+        text-align: center;
+    }
+    .error-box {
+        margin-top: 8px;
+        min-height: 24px;
+        color: #c00;
+        font-weight: bold;
+    }
+    .result-header {
+        margin-bottom: 18px;
+        padding: 12px 16px;
+        background: #fff;
+        border: solid 1px #ddd;
+        border-radius: 8px;
+    }
+    .result-header .stat {
+        display: inline-block;
+        margin-right: 8px;
+        margin-bottom: 6px;
+        padding: 4px 10px;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 999px;
+        background: linear-gradient(120deg, #0055d4, #5792ff);
+    }
+    .result-columns .panel {
+        border: solid 1px #ddd;
+        border-radius: 10px;
+        background: #fff;
+        overflow: hidden;
+    }
+    .result-columns h3 {
+        padding: 12px 14px;
+        color: #fff;
+        font-size: 16px;
+        background: linear-gradient(120deg, #0055d4, #4f89f2);
+    }
+    .result-columns .right h3 {
+        background: linear-gradient(120deg, #5f2eea, #9a6cff);
+    }
+    .diff-list {
+        max-height: 560px;
+        overflow: auto;
+        padding: 12px;
+        background: #fafcff;
+    }
+    .diff-item {
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border-left: solid 4px #ff8a00;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 40, 120, 0.06);
+    }
+    .diff-item:last-child { margin-bottom: 0; }
+    .diff-item.missing { border-left-color: #d00; }
+    .diff-item.type { border-left-color: #5f2eea; }
+    .diff-item summary {
+        cursor: pointer;
+        list-style: none;
+        position: relative;
+        padding: 11px 14px 11px 32px;
+        background: #f5f9ff;
+        border-radius: 8px 8px 0 0;
+    }
+    .diff-item summary::-webkit-details-marker { display: none; }
+    .diff-item summary:before {
+        content: "▸";
+        position: absolute;
+        left: 12px;
+        top: 11px;
+        color: #666;
+        transition: transform .18s;
+    }
+    .diff-item[open] summary:before { transform: rotate(90deg); }
+    .diff-path {
+        display: block;
+        margin-bottom: 2px;
+        color: #333;
+        font-weight: bold;
+        word-break: break-all;
+    }
+    .diff-reason {
+        color: #666;
+        font-size: 12px;
+    }
+    .diff-body {
+        padding: 10px 12px 12px;
+        border-top: solid 1px #eef3ff;
+    }
+    .diff-body .label {
+        margin-bottom: 4px;
+        color: #666;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .diff-item pre {
+        margin: 0;
+        padding: 8px 10px;
+        border: solid 1px #e4e8f1;
+        border-radius: 6px;
+        background: #f8fbff;
+        color: #222;
+        font: normal 12px/1.45 Consolas, Monaco, monospace;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    .inline-line {
+        margin-bottom: 10px;
+    }
+    .inline-line:last-child {
+        margin-bottom: 0;
+    }
+    .line-prefix {
+        display: inline-block;
+        width: 18px;
+        font-weight: bold;
+    }
+    .line-minus {
+        color: #c00;
+        background: #fff5f5;
+        border-color: #ffd0d0;
+    }
+    .line-plus {
+        color: #0b6f00;
+        background: #f4fff4;
+        border-color: #c9ebc9;
+    }
+    .inline-del {
+        background: #ffd9d9;
+        color: #c00;
+    }
+    .inline-add {
+        background: #d9ffd9;
+        color: #0b6f00;
+    }
+    .empty-state {
+        padding: 20px;
+        text-align: center;
+        color: #397300;
+        font-weight: bold;
+        border: dashed 1px #b8d998;
+        border-radius: 8px;
+        background: #f7fff0;
+    }
+    @media only screen and (max-width: 1024px) {
+        .editor-columns .col,
+        .result-columns .col { width: 100%; }
+        .editor-columns .col:first-child,
+        .result-columns .col:first-child { margin-bottom: 20px; }
+    }
+</style>
+<script src="main.js"></script>
+</head>
+
+<body onload="initJsonDiffTool()">
+<div class="wrapper mx-auto">
+    <div class="hero">
+        <h1>JSON 差异对比工具</h1>
+        <p>先输入两段 JSON，点击“开始对比”后进入结果页。结果用双列展示两边的差异数据。</p>
+    </div>
+
+    <div id="inputView" class="panel-a form-a">
+        <div class="editor-columns clearfix">
+            <div class="col">
+                <p class="mb-1"><strong>JSON A</strong></p>
+                <textarea id="jsonInputA"></textarea>
+                <p id="errorA" class="error-box"></p>
+            </div>
+            <div class="col">
+                <p class="mb-1"><strong>JSON B</strong></p>
+                <textarea id="jsonInputB"></textarea>
+                <p id="errorB" class="error-box"></p>
+            </div>
+        </div>
+        <div class="toolbar">
+            <input class="btn mr-2" type="button" value="开始对比" onclick="goCompare()">
+            <input class="btn-secondary mr-2" type="button" value="交换左右" onclick="swapInputs()">
+            <input class="btn-secondary" type="button" value="清空" onclick="clearInputs()">
+        </div>
+        <p class="tips">Tips: 支持对象、数组嵌套。路径格式示例：<code>$.order.items[0].sku</code></p>
+    </div>
+
+    <div id="resultView" class="panel-a hide">
+        <div class="result-header">
+            <p id="resultTitle" class="mb-2"><strong>对比结果</strong></p>
+            <span id="statTotal" class="stat"></span>
+            <span id="statLeft" class="stat"></span>
+            <span id="statRight" class="stat"></span>
+            <p class="mt-2">
+                <input class="btn-secondary mr-2" type="button" value="全部展开" onclick="toggleAllNodes(true)">
+                <input class="btn-secondary mr-2" type="button" value="全部折叠" onclick="toggleAllNodes(false)">
+                <input class="btn-secondary" type="button" value="返回编辑" onclick="goEdit()">
+            </p>
+        </div>
+
+        <div class="result-columns clearfix">
+            <div class="col left">
+                <div class="panel">
+                    <h3>JSON A 相比 JSON B 的差异</h3>
+                    <div id="diffListA" class="diff-list"></div>
+                </div>
+            </div>
+            <div class="col right">
+                <div class="panel">
+                    <h3>JSON B 相比 JSON A 的差异</h3>
+                    <div id="diffListB" class="diff-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSON 对比（整段标记版）</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<style>
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    .wrapper {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 10px;
+    }
+    .layout-view {
+        display: flex;
+        gap: 12px;
+        height: 100%;
+        min-height: 0;
+        padding: 12px;
+        background: #f7f7f7;
+        border: solid 1px #ddd;
+        border-radius: 10px;
+    }
+    .layout-view.hide {
+        display: none;
+    }
+    .side-box {
+        flex: 0 0 290px;
+        width: 290px;
+        padding: 16px;
+        border: solid 1px #d9e5ff;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #f6f9ff, #fff);
+        overflow: auto;
+    }
+    .side-box h1,
+    .side-box h2 {
+        margin-bottom: 8px;
+        font-size: 21px;
+        line-height: 1.3;
+    }
+    .side-box p {
+        margin-bottom: 12px;
+        color: #555;
+    }
+    .side-box .btn,
+    .side-box .btn-secondary {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    .main-box {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+    }
+    .editor-columns,
+    .result-columns {
+        display: flex;
+        gap: 12px;
+        flex: 1;
+        min-height: 0;
+        margin-left: 0;
+    }
+    .editor-columns .col,
+    .result-columns .col {
+        width: 0;
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .editor-columns textarea {
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        height: auto;
+        font: normal 13px/1.5 Consolas, Monaco, monospace;
+    }
+    .error-box {
+        margin-top: 8px;
+        min-height: 24px;
+        color: #c00;
+        font-weight: bold;
+    }
+    .side-stats .stat {
+        display: inline-block;
+        margin: 0 6px 6px 0;
+        padding: 4px 10px;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 999px;
+        background: linear-gradient(120deg, #0055d4, #5792ff);
+    }
+    .result-tools {
+        margin-top: 10px;
+    }
+    .result-tools .tool-check {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        color: #333;
+        cursor: pointer;
+    }
+    .result-tools .tool-check input {
+        margin-right: 4px;
+        vertical-align: middle;
+    }
+    .nav-label {
+        display: block;
+        margin: 8px 0;
+        min-width: 0;
+        color: #666;
+        font-size: 13px;
+        text-align: left;
+    }
+    .panel-b {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        border: solid 1px #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+    }
+    .panel-b h3 {
+        padding: 12px 14px;
+        color: #fff;
+        font-size: 16px;
+        background: linear-gradient(120deg, #0055d4, #4f89f2);
+    }
+    .result-columns .right h3 {
+        background: linear-gradient(120deg, #5f2eea, #9a6cff);
+    }
+    .tag-list {
+        padding: 10px 12px;
+        border-bottom: solid 1px #eceff7;
+        background: #f8fbff;
+        max-height: 120px;
+        overflow: auto;
+    }
+    .tag {
+        display: inline-block;
+        margin: 0 6px 6px 0;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        line-height: 1.4;
+        cursor: pointer;
+    }
+    .tag.value { background: #fff0d9; color: #9c5d00; }
+    .tag.type { background: #efe3ff; color: #5f2eea; }
+    .tag.missing { background: #ffe4e4; color: #b50000; }
+    .tag.selected {
+        box-shadow: 0 0 0 2px #0055d4 inset;
+    }
+    .tag-empty {
+        color: #397300;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .json-view {
+        flex: 1;
+        min-height: 0;
+        height: auto;
+        overflow: auto;
+        padding: 10px 0;
+        background: #fff;
+        font: normal 13px/1.5 Consolas, Monaco, monospace;
+    }
+    .json-line {
+        padding: 0 12px;
+        white-space: pre;
+    }
+    .json-view.only-diff .json-line.normal {
+        display: none;
+    }
+    .json-line.mark-value {
+        background: #fff9ec;
+        border-left: solid 3px #ffad33;
+    }
+    .json-line.mark-type {
+        background: #f4ecff;
+        border-left: solid 3px #7a3bf2;
+    }
+    .json-line.mark-missing {
+        background: #fff0f0;
+        border-left: solid 3px #d00;
+    }
+    .json-line.selected-line {
+        box-shadow: inset 0 0 0 2px #4a8bff;
+    }
+    .json-line .badge {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 0 6px;
+        border-radius: 999px;
+        font-size: 11px;
+        line-height: 18px;
+        vertical-align: middle;
+    }
+    .json-line.mark-value .badge { background: #ffad33; color: #fff; }
+    .json-line.mark-type .badge { background: #7a3bf2; color: #fff; }
+    .json-line.mark-missing .badge { background: #d00; color: #fff; }
+    @media only screen and (max-width: 1024px) {
+        .layout-view {
+            flex-direction: column;
+        }
+        .side-box {
+            width: 100%;
+            flex: 0 0 auto;
+        }
+        .editor-columns .col,
+        .result-columns .col { width: auto; }
+        .editor-columns,
+        .result-columns {
+            flex-direction: column;
+            gap: 10px;
+        }
+        .editor-columns textarea {
+            min-height: 100px;
+        }
+    }
+</style>
+<script src="main.js"></script>
+</head>
+<body onload="initMarkedJsonDiffTool()">
+<div class="wrapper mx-auto">
+    <div id="inputView" class="layout-view form-a">
+        <div class="side-box">
+            <h1>JSON 对比工具</h1>
+            <p>双栏输入，尽量扩大可视范围。点击对比后进入完整 JSON 标记页。</p>
+            <input class="btn" type="button" value="开始对比" onclick="goCompare()">
+            <input class="btn-secondary" type="button" value="交换左右" onclick="swapInputs()">
+            <input class="btn-secondary" type="button" value="清空" onclick="clearInputs()">
+        </div>
+        <div class="main-box">
+            <div class="editor-columns clearfix">
+                <div class="col">
+                    <p class="mb-1"><strong>JSON A</strong></p>
+                    <textarea id="jsonInputA"></textarea>
+                    <p id="errorA" class="error-box"></p>
+                </div>
+                <div class="col">
+                    <p class="mb-1"><strong>JSON B</strong></p>
+                    <textarea id="jsonInputB"></textarea>
+                    <p id="errorB" class="error-box"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultView" class="layout-view hide">
+        <div class="side-box">
+            <h2 id="resultTitle"><strong>对比结果</strong></h2>
+            <div class="side-stats">
+                <span id="statTotal" class="stat"></span>
+                <span id="statLeft" class="stat"></span>
+                <span id="statRight" class="stat"></span>
+            </div>
+            <div class="result-tools">
+                <label class="tool-check"><input id="optOnlyDiff" type="checkbox" onchange="toggleOnlyDiff(this.checked)">仅看差异</label>
+                <label class="tool-check"><input id="optSyncScroll" type="checkbox" checked onchange="toggleSyncScroll(this.checked)">同步滚动</label>
+                <input class="btn-secondary" type="button" value="上一处" onclick="goPrevDiff()">
+                <span id="navLabel" class="nav-label">0 / 0</span>
+                <input class="btn-secondary" type="button" value="下一处" onclick="goNextDiff()">
+                <input class="btn-secondary" type="button" value="返回编辑" onclick="goEdit()">
+            </div>
+        </div>
+        <div class="main-box">
+            <div class="result-columns clearfix">
+                <div class="col left">
+                    <div class="panel-b">
+                        <h3>JSON A（完整展示）</h3>
+                        <div id="tagListA" class="tag-list"></div>
+                        <div id="jsonResultA" class="json-view"></div>
+                    </div>
+                </div>
+                <div class="col right">
+                    <div class="panel-b">
+                        <h3>JSON B（完整展示）</h3>
+                        <div id="tagListB" class="tag-list"></div>
+                        <div id="jsonResultB" class="json-view"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
