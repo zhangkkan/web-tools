@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSON 去转义并格式化</title>
+<link href="../assets/dist/global.css" rel="stylesheet" type="text/css"/>
+<style>
+    .wrapper { max-width: 1180px; }
+    .editor,
+    .result {
+        width: 100%;
+        font: normal 13px/1.5 Consolas, Monaco, monospace;
+    }
+    .editor { height: 320px; }
+    .result { height: 360px; }
+    .toolbar .btn,
+    .toolbar .btn-secondary { min-width: 150px; }
+    .error-box {
+        min-height: 24px;
+        color: #c00;
+        font-weight: bold;
+    }
+    .tool-check {
+        display: inline-block;
+        margin-right: 14px;
+        font-size: 13px;
+        color: #333;
+    }
+</style>
+<script src="main.js"></script>
+</head>
+<body onload="initJsonUnescapeTool()">
+<div class="wrapper mx-auto">
+    <div class="panel-a form-a">
+        <p class="mb-2"><strong>JSON 去转义并格式化</strong></p>
+        <p class="mb-2 text-muted">适用于日志中包含转义 JSON 的字符串，例如 <code>{\"a\":1}</code>、<code>"{\"a\":1}"</code>。</p>
+
+        <p class="mb-1"><strong>输入内容</strong></p>
+        <textarea id="inputData" class="editor mb-1"></textarea>
+        <p id="errorMsg" class="error-box mb-2"></p>
+
+        <p class="mb-2">
+            <label class="tool-check">
+                <input id="deepParse" type="checkbox" checked>
+                深度解析字符串中的 JSON
+            </label>
+        </p>
+
+        <p class="toolbar mb-2">
+            <input class="btn mr-2" type="button" value="去转义并格式化" onclick="unescapeAndFormat()">
+            <input class="btn-secondary mr-2" type="button" value="仅去转义" onclick="unescapeOnly()">
+            <input class="btn-secondary mr-2" type="button" value="清空结果" onclick="clearResult()">
+            <input class="btn-secondary mr-2" type="button" value="复制结果" onclick="copyResult()">
+            <input class="btn-secondary" type="button" value="清空" onclick="clearAll()">
+        </p>
+
+        <p id="copyTips" class="mb-2 text-success"></p>
+
+        <p class="mb-1"><strong>输出结果</strong></p>
+        <textarea id="outputData" class="result" readonly></textarea>
+    </div>
+</div>
+</body>
+</html>
